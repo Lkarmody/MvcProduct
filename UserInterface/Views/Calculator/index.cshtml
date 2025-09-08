@@ -1,0 +1,35 @@
+﻿@model UserInterface.Models.CalculationResult
+
+<h2>Calculator</h2>
+
+<form asp-action="Index" method="post">
+    <div class="form-group">
+        
+        <input asp-for="A" class="form-control" type="number" required />
+    </div>
+
+    <div class="form-group">
+        
+        <input asp-for="B" class="form-control" type="number" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Operation"></label>
+        <select asp-for="Operation" class="form-control" required>
+            <option value="">-- Select Operation --</option>
+            <option value="Add">Add</option>
+            <option value="Subtract">Subtract</option>
+            <option value="Multiply">Multiply</option>
+            <option value="Divide">Divide</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Calculate</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Result))
+{
+    <div class="alert alert-info mt-3">
+        <strong>Result:</strong> @Model.Result
+    </div>
+}

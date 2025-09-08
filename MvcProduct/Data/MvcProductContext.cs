@@ -10,9 +10,7 @@ namespace MvcProduct.Data
     public class MvcProductContext : DbContext
     {
         public MvcProductContext (DbContextOptions<MvcProductContext> options)
-            : base(options)
-        {
-        }
+            : base(options) { }
 
         public DbSet<MvcProduct.Models.Products> Products { get; set; } = default!;
     }
