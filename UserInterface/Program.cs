@@ -1,11 +1,14 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ApplicationCore.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
 using Infrastructure;
 
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<CarsContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CarsContext") ?? throw new InvalidOperationException("Connection string 'CarsContext' not found.")));
 
 
 // Register the calculator service as Transient

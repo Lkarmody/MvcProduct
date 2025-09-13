@@ -2,36 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using UserInterface.Models;
 using ApplicationCore.Entities;
-using ApplicationCore.Interfaces;
-using Infrastructure.Data;
 
 namespace UserInterface.Controllers
 {
-   [Route("products")]
-    public class ProductsController : Controller
+    public class CarsController : Controller
     {
-        private readonly MvcProductContext _context;
-        private readonly ILogger<ProductsController> _logger;
+        private readonly CarsContext _context;
 
-        public ProductsController(MvcProductContext context, ILogger<ProductsController> logger)
+        public CarsController(CarsContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
-        // GET: Products
-        [HttpGet("")]
+        // GET: Cars
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await _context.Cars.ToListAsync());
         }
 
-        // GET: Products/Details/5
-        [HttpGet("details/{id}")]
+        // GET: Cars/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -39,42 +34,39 @@ namespace UserInterface.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
+            var cars = await _context.Cars
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (products == null)
+            if (cars == null)
             {
                 return NotFound();
             }
-            _logger.LogInformation("Item with title: " + products.Title + " checked for details");
-            return View(products);
+
+            return View(cars);
         }
 
-        // GET: Products/Create
-        [HttpGet("create")]
+        // GET: Cars/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Cars/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("create")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,ItemType,Price")] Products products)
+        public async Task<IActionResult> Create([Bind("Id,Model,Year,Color,Ownership")] ApplicationCore.Entities.Cars cars)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(products);
-                _logger.LogInformation("New item created with title: " + products.Title);
+                _context.Add(cars);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            return View(cars);
         }
 
-        // GET: Products/Edit/5
-        [HttpGet("edit")]
+        // GET: Cars/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,22 +74,22 @@ namespace UserInterface.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products.FindAsync(id);
-            if (products == null)
+            var cars = await _context.Cars.FindAsync(id);
+            if (cars == null)
             {
                 return NotFound();
             }
-            return View(products);
+            return View(cars);
         }
 
-        // POST: Products/Edit/5
+        // POST: Cars/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("edit")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,ItemType,Price")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Model,Year,Color,Ownership")] ApplicationCore.Entities.Cars cars)
         {
-            if (id != products.Id)
+            if (id != cars.Id)
             {
                 return NotFound();
             }
@@ -106,12 +98,12 @@ namespace UserInterface.Controllers
             {
                 try
                 {
-                    _context.Update(products);
+                    _context.Update(cars);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductsExists(products.Id))
+                    if (!CarsExists(cars.Id))
                     {
                         return NotFound();
                     }
@@ -120,14 +112,12 @@ namespace UserInterface.Controllers
                         throw;
                     }
                 }
-                _logger.LogInformation("Item with title: " + products.Title + " edited");
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            return View(cars);
         }
 
-        // GET: Products/Delete/5
-        [HttpGet("delete")]
+        // GET: Cars/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,35 +125,34 @@ namespace UserInterface.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
+            var cars = await _context.Cars
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (products == null)
+            if (cars == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(cars);
         }
 
-        // POST: Products/Delete/5
-        [HttpPost("delete")]
+        // POST: Cars/Delete/5
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var products = await _context.Products.FindAsync(id);
-            if (products != null)
+            var cars = await _context.Cars.FindAsync(id);
+            if (cars != null)
             {
-                _logger.LogInformation("Item with title:" + products.Title + " deleted");
-                _context.Products.Remove(products);
+                _context.Cars.Remove(cars);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductsExists(int id)
+        private bool CarsExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Cars.Any(e => e.Id == id);
         }
     }
 }
