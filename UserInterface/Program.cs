@@ -6,6 +6,9 @@ using Infrastructure.Services;
 using Infrastructure;
 
 
+SettingsManager.Load();
+
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CarsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CarsContext") ?? throw new InvalidOperationException("Connection string 'CarsContext' not found.")));
@@ -25,6 +28,9 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 
 var app = builder.Build();
+
+
+SettingsManager.Save();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
