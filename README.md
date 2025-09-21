@@ -1,10 +1,8 @@
 # MvcProduct
-This project followed the Separation of Concerns principle by organizing logic into different components
-Controllers handle user interactions.
-Services contain the logic for performing addition, subtraction, multiplication and division operations.
-Interfaces allow for flexibility and testability.
-Models represent data passed between the controller and view.
-Views render the user interface using Razor pages.
+Week 4 Assignment - update - 
+Added CarsContoller, Cars Model, Cars View and CarsContext DB
+Bootstrap works due to scafolding, window resizes and operates. 
+Used Select form and radio buttons as new input methods for the CarsController.
+Added my name "Lissette Karmody" as a partial view in the footer by creating a _UserName.cshtml file and then referencing it in the _Layout.cshtml file.
+Tested project with tab usage only and logic is sound on all pages. 
 
-By separating the program into these different components the code is easier to maintain, test, and extend.
-The calculator logic is registered as a transient service using ASP.NET Core’s built-in dependency injection container
